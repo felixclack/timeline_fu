@@ -4,7 +4,7 @@ Easily build timelines, much like GitHub's news feed.
 
 == Usage
 
-TimelineFu requires you to have a TimelineEvent model. 
+TimelineFu requires you to have a TimelineEvent model.
 The simplest way is to use the generator.
 
   $ script/generate timeline_fu && rake db:migrate
@@ -23,10 +23,20 @@ Next step is to determine what generates an event in your various models.
   end
 
 You can add 'fires' statements to as many models as you want on as many models
-as you want. 
+as you want.
 
 They are hooked for you after standard ActiveRecord events. In
-the previous example, it's an after_create on Posts. 
+the previous example, it's an after_create on Posts.
+
+=== Use with a Mongo ORM
+
+If you're not using ActiveRecord then you'll need to manually include the module in any class you wish to use the fires method.
+
+    class User
+      include TimelineFu::Fires
+
+      fires :new_user
+    end
 
 === Parameters for #fires
 
@@ -36,7 +46,7 @@ You can supply a few parameters to fires, two of them are mandatory.
 
 The rest all fit neatly in an options hash.
 
-- :on => [ActiveRecord event] 
+- :on => [ActiveRecord event]
   - mandatory. You use it to specify whether you want the event created after a create, update or destroy. You can also supply an array of events, e.g. [:create, :update].
 - :actor is your way of specifying who took this action.
   - In the example, post.author is going to be this person.
@@ -59,13 +69,13 @@ Here's another example:
 
 === TimelineEvent instantiation
 
-The ActiveRecord event hook will automatically instantiate a 
+The ActiveRecord event hook will automatically instantiate a
 TimelineEvent instance for you.
 It will receive the following parameters in #create!
 
-- event_type 
+- event_type
   - "new_comment" in the comment example
-- actor 
+- actor
   - the commenter
 - subject
   - the comment instance
@@ -82,14 +92,14 @@ The generated model stores most of its info as polymorphic relationships.
 
 == How you actually get your timeline
 
-To get your timeline you'll probably have to create your own finder SQL or scopes 
-(if your situation is extremely simple). 
+To get your timeline you'll probably have to create your own finder SQL or scopes
+(if your situation is extremely simple).
 
-TimelineFu is not currently providing anything to generate your timeline because 
-different situations will have wildly different requirements. Like access control 
+TimelineFu is not currently providing anything to generate your timeline because
+different situations will have wildly different requirements. Like access control
 issues and actually just what crazy stuff you're cramming in that timeline.
 
-We're not saying it can't be done, just that we haven't done it yet. 
+We're not saying it can't be done, just that we haven't done it yet.
 Contributions are welcome :-)
 
 == Get it

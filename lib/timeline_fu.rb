@@ -1,6 +1,6 @@
 require 'timeline_fu/fires'
 
-module TimelineFu  
+module TimelineFu
 end
 
-ActiveRecord::Base.send :include, TimelineFu::Fires
+ActiveRecord::Base.send :include, TimelineFu::Fires if defined? ActiveRecord::Base
